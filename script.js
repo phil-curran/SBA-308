@@ -80,23 +80,18 @@ const LearnerSubmissions = [
   },
 ];
 
-// let temp = LearnerSubmissions.map((submission) => {
-//   let temp = [];
-//   temp.push(parseInt(submission.learner_id));
-//   console.log(submission.learner_id);
-//   console.log(typeof submission.learner_id);
-//   return temp;
-// });
+// helper functions
+// converts date string to date object so they can be compared
+const dateConverter = (string) => {
+  return new Date(string);
+};
 
-// let students = () => {
-//   let temp = [];
-//   LearnerSubmissions.forEach((submission) => {
-//     console.log(submission.learner_id);
-//     temp.push(submission.learner_id);
-//   });
-//   return new Set(temp);
-// };
+// checks if an assignment was submitted on time
+const turnedInOnTime = (due, submitted) => {
+  return dateConverter(submitted) >= dateConverter(due) ? true : false;
+};
 
+// get list of students in LearnerSubmissions as array so it's iterable:
 const studentList = (() => {
   let temp = [];
   LearnerSubmissions.forEach((submission) => {
@@ -105,17 +100,17 @@ const studentList = (() => {
   return Array.from(new Set(temp));
 })();
 
-console.log(studentList[0]);
+let result = [];
 
-// helper functions
-// const dateConverter = (string) => {
-//   return new Date(string);
-// };
+// iterate through studentList
+studentList.forEach((student) => {
+  // empty object to hold student info:
+  let temp = {};
+  temp.id = student;
+  result.push(temp);
+});
 
-// const turnedInOnTime = (due, submitted) => {
-//   return dateConverter(submitted) >= dateConverter(due) ? true : false;
-// };
-
+console.log(result);
 // const getLearnerData = (CourseInfo, AssignmentGroup, LearnerSubmission) => {};
 
 // console.log(getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions));
