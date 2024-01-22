@@ -86,28 +86,13 @@ const findAssignment = (id) => {
   });
 };
 
-// console.log(findAssignment(1));
-// console.log(findAssignment(1).name);
-// console.log(findAssignment(1).due_at);
-// console.log(findAssignment(1).points_possible);
-
 const getStudentGrades = (id) => {
-  let temp = LearnerSubmissions.filter((submission) => {
-    return submission.learner_id === id;
+  return LearnerSubmissions.filter((submission) => {
+    submission.learner_id === id;
   });
-  //   let earnedPoints = 0;
-  temp.forEach((submission) => {
-    console.log(
-      submission.submitted_at < findAssignment(submission.assignment_id).due_at
-    );
-  });
-  //   return earnedPoints;
-  return temp;
 };
 
 console.log(getStudentGrades(125));
-
-// console.log(findAssignment(1).due_at);
 
 // helper functions
 // converts date string to date object so they can be compared
