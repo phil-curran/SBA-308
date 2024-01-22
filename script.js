@@ -80,6 +80,35 @@ const LearnerSubmissions = [
   },
 ];
 
+const findAssignment = (id) => {
+  return AssignmentGroup.assignments.find((assignment) => {
+    return assignment.id === id;
+  });
+};
+
+// console.log(findAssignment(1));
+// console.log(findAssignment(1).name);
+// console.log(findAssignment(1).due_at);
+// console.log(findAssignment(1).points_possible);
+
+const getStudentGrades = (id) => {
+  let temp = LearnerSubmissions.filter((submission) => {
+    return submission.learner_id === id;
+  });
+  //   let earnedPoints = 0;
+  temp.forEach((submission) => {
+    console.log(
+      submission.submitted_at < findAssignment(submission.assignment_id).due_at
+    );
+  });
+  //   return earnedPoints;
+  return temp;
+};
+
+console.log(getStudentGrades(125));
+
+// console.log(findAssignment(1).due_at);
+
 // helper functions
 // converts date string to date object so they can be compared
 const dateConverter = (string) => {
@@ -88,7 +117,7 @@ const dateConverter = (string) => {
 
 // checks if an assignment was submitted on time
 const turnedInOnTime = (due, submitted) => {
-  return dateConverter(submitted) >= dateConverter(due) ? true : false;
+  return dateConverter(due) <= dateConverter(submitted) ? true : false;
 };
 
 // get list of students in LearnerSubmissions as array so it's iterable:
@@ -99,21 +128,6 @@ const studentList = (() => {
   });
   return Array.from(new Set(temp));
 })();
-
-let result = [];
-
-// iterate through studentList
-studentList.forEach((student) => {
-  // empty object to hold student info:
-  let temp = {};
-  temp.id = student;
-  result.push(temp);
-});
-
-console.log(result);
-// const getLearnerData = (CourseInfo, AssignmentGroup, LearnerSubmission) => {};
-
-// console.log(getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions));
 
 // expected output
 // [
