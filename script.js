@@ -80,18 +80,45 @@ const LearnerSubmissions = [
   },
 ];
 
+// let temp = LearnerSubmissions.map((submission) => {
+//   let temp = [];
+//   temp.push(parseInt(submission.learner_id));
+//   console.log(submission.learner_id);
+//   console.log(typeof submission.learner_id);
+//   return temp;
+// });
+
+// let students = () => {
+//   let temp = [];
+//   LearnerSubmissions.forEach((submission) => {
+//     console.log(submission.learner_id);
+//     temp.push(submission.learner_id);
+//   });
+//   return new Set(temp);
+// };
+
+const studentList = (() => {
+  let temp = [];
+  LearnerSubmissions.forEach((submission) => {
+    temp.push(submission.learner_id);
+  });
+  return Array.from(new Set(temp));
+})();
+
+console.log(studentList[0]);
+
 // helper functions
-const dateConverter = (string) => {
-  return new Date(string);
-};
+// const dateConverter = (string) => {
+//   return new Date(string);
+// };
 
-const turnedInOnTime = (due, submitted) => {
-  return dateConverter(submitted) >= dateConverter(due) ? true : false;
-};
+// const turnedInOnTime = (due, submitted) => {
+//   return dateConverter(submitted) >= dateConverter(due) ? true : false;
+// };
 
-const getLearnerData = (CourseInfo, AssignmentGroup, LearnerSubmission) => {};
+// const getLearnerData = (CourseInfo, AssignmentGroup, LearnerSubmission) => {};
 
-console.log(getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions));
+// console.log(getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions));
 
 // expected output
 // [
