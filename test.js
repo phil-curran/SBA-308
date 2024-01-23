@@ -3,7 +3,6 @@ const CourseInfo = {
   id: 451,
   name: "Introduction to JavaScript",
 };
-
 // The provided assignment group.
 const AssignmentGroup = {
   id: 12345,
@@ -31,7 +30,6 @@ const AssignmentGroup = {
     },
   ],
 };
-
 // The provided learner submission data.
 const LearnerSubmissions = [
   {
@@ -77,14 +75,12 @@ const LearnerSubmissions = [
 ];
 
 // helper functions:
-
-//get assignment by assignment_id as object for comparison
+//get assignment from AssignmentGroup.assignments by id for comparison
 const getAssignmentInfo = (id) => {
   return AssignmentGroup.assignments.find((assignment) => {
     return assignment.id === id;
   });
 };
-
 // console.log(getAssignmentInfo(1));
 
 // get list of students from LearnerSubmissions
@@ -95,18 +91,19 @@ const studentList = (() => {
   });
   return Array.from(new Set(temp));
 })();
+// console.log("Student List: , ", studentList);
 
+// use student id to get list of student submissions from LearnerSubmissions
 const getStudentGrades = (id) => {
   return LearnerSubmissions.filter((submission) => {
     return submission.learner_id === id;
   });
 };
+console.log(getStudentGrades(125));
 
 // main function: build student info
 // takes one of the students ids
 const buildStudentInfo = (studentIdNumber) => {
-  //   console.log(studentIdNumber);
-
   // create empty student object
   let student = {};
 
@@ -119,21 +116,30 @@ const buildStudentInfo = (studentIdNumber) => {
   let studentGrades = getStudentGrades(studentIdNumber);
   //   console.log("Student grades: ", studentGrades);
 
+  let earnedPoints = 0;
+  let possiblePoints = 0;
+
   // iterate through array of student assignments
-  studentGrades.forEach((assignment) => {
-    console.log("assignment: ", assignment);
+  studentGrades.forEach((studentAssignment) => {
+    // console.log("student assignment: ", studentAssignment);
     // for each assignment, use getAssignmentInfo function to get assignment details
     // returns an assigment object
-    let tempAssignment = getAssignmentInfo(assignment.assignment_id);
-    // console.log("Temp assignment: ", tempAssignment);
+    let assignmentDetails = getAssignmentInfo(studentAssignment.assignment_id);
+    // console.log("Temp assignment: ", assignmentDetails);
 
     // compare the student assignment to the assignment parameters
-    // if (assignment.submitted_at < assignmentDetails.due_at) {
-    //   earnedpoints += assignment.score;
-    //   possiblepoints += assignmentDetails.points_possible;
-    //   student[assignment.assignment_id] = earnedPoints / possiblePoints;
-    // }
+    if (studentAssignment.submission.submitted_at < assignmentDetails.due_at) {
+      //   console.log("assignment score: ", studentAssignment.submission.score);
+      earnedPoints += studentAssignment.submission.score;
+      possiblePoints += assignmentDetails.points_possible;
+      let keyValue = parseInt(studentAssignment.assignment_id);
+      student[keyValue] =
+        studentAssignment.submission.score / assignmentDetails.points_possible;
+    }
   });
+  student.avg = (earnedPoints / possiblePoints).toFixed(2);
+
+  result.push(student);
 };
 
 // run the program
@@ -142,7 +148,7 @@ const buildStudentInfo = (studentIdNumber) => {
 let result = [];
 
 // call the main function
-buildStudentInfo(125);
+result.push(buildStudentInfo(125));
 
 // return the result
 console.log("Result: ", result);
