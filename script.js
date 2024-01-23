@@ -1,7 +1,3 @@
-/* Create a function named getLearnerData() that accepts these values as parameters,
-in the order listed: (CourseInfo, AssignmentGroup, [LearnerSubmission]), 
-and returns the formatted result, which should be an array of objects as described above. */
-
 // The provided course information.
 const CourseInfo = {
   id: 451,
@@ -80,40 +76,9 @@ const LearnerSubmissions = [
   },
 ];
 
-const findAssignment = (id) => {
-  return AssignmentGroup.assignments.find((assignment) => {
-    return assignment.id === id;
-  });
-};
+const getLearnerData = (CourseInfo, AssignmentGroup, LearnerSubmissions) => {};
 
-const getStudentGrades = (id) => {
-  return LearnerSubmissions.filter((submission) => {
-    submission.learner_id === id;
-  });
-};
-
-console.log(getStudentGrades(125));
-
-// helper functions
-// converts date string to date object so they can be compared
-const dateConverter = (string) => {
-  return new Date(string);
-};
-
-// checks if an assignment was submitted on time
-const turnedInOnTime = (due, submitted) => {
-  return dateConverter(due) <= dateConverter(submitted) ? true : false;
-};
-
-// get list of students in LearnerSubmissions as array so it's iterable:
-const studentList = (() => {
-  let temp = [];
-  LearnerSubmissions.forEach((submission) => {
-    temp.push(submission.learner_id);
-  });
-  return Array.from(new Set(temp));
-})();
-
+// console.log(getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions));
 // expected output
 // [
 //   {
