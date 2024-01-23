@@ -3,7 +3,6 @@ const CourseInfo = {
   id: 451,
   name: "Introduction to JavaScript",
 };
-
 // The provided assignment group.
 const AssignmentGroup = {
   id: 12345,
@@ -31,7 +30,6 @@ const AssignmentGroup = {
     },
   ],
 };
-
 // The provided learner submission data.
 const LearnerSubmissions = [
   {
@@ -76,7 +74,16 @@ const LearnerSubmissions = [
   },
 ];
 
-// get an iterable list of students from LearnerSubmissions
+// helper functions:
+//get assignment from AssignmentGroup.assignments by id for comparison
+const getAssignmentInfo = (id) => {
+  return AssignmentGroup.assignments.find((assignment) => {
+    return assignment.id === id;
+  });
+};
+// console.log(getAssignmentInfo(1));
+
+// get list of students from LearnerSubmissions
 const studentList = (() => {
   let temp = [];
   LearnerSubmissions.forEach((submission) => {
@@ -84,87 +91,64 @@ const studentList = (() => {
   });
   return Array.from(new Set(temp));
 })();
+// console.log("Student List: , ", studentList);
 
-// console.log(studentList);
-
-// iterates through student list and gets list of student submissions by student id
-// returns array of objects with student submissions
+// use student id to get list of student submissions from LearnerSubmissions
 const getStudentGrades = (id) => {
   return LearnerSubmissions.filter((submission) => {
     return submission.learner_id === id;
   });
 };
+console.log(getStudentGrades(125));
 
-// console.log(getStudentGrades(125));
+// main function: build student info
+// takes one of the students ids
+const buildStudentInfo = (studentIdNumber) => {
+  // create empty student object
+  let student = {};
 
-/*
-returns:
-[
-  {
-    learner_id: 125,
-    assignment_id: 1,
-    submission: { submitted_at: '2023-01-25', score: 47 }
-  },
-  {
-    learner_id: 125,
-    assignment_id: 2,
-    submission: { submitted_at: '2023-02-12', score: 150 }
-  },
-  {
-    learner_id: 125,
-    assignment_id: 3,
-    submission: { submitted_at: '2023-01-25', score: 400 }
-  }
-]
-*/
+  // add student id to student object:
+  student.id = studentIdNumber;
+  //   console.log("Student id: ", student);
 
-// test with one students info:
-let temp = getStudentGrades(125);
+  // uses the getStudentGrades function to get an array of student submissions
+  // returns array of objects
+  let studentGrades = getStudentGrades(studentIdNumber);
+  //   console.log("Student grades: ", studentGrades);
 
-// gets assignment object from AssignmentGroup.assignments array by id
-let getAssignmentInfo = (id) => {
-  return AssignmentGroup.assignments.find((assignment) => {
-    return assignment.id === id;
+  let earnedPoints = 0;
+  let possiblePoints = 0;
+
+  // iterate through array of student assignments
+  studentGrades.forEach((studentAssignment) => {
+    // console.log("student assignment: ", studentAssignment);
+    // for each assignment, use getAssignmentInfo function to get assignment details
+    // returns an assigment object
+    let assignmentDetails = getAssignmentInfo(studentAssignment.assignment_id);
+    // console.log("Temp assignment: ", assignmentDetails);
+
+    // compare the student assignment to the assignment parameters
+    if (studentAssignment.submission.submitted_at < assignmentDetails.due_at) {
+      //   console.log("assignment score: ", studentAssignment.submission.score);
+      earnedPoints += studentAssignment.submission.score;
+      possiblePoints += assignmentDetails.points_possible;
+      let keyValue = parseInt(studentAssignment.assignment_id);
+      student[keyValue] =
+        studentAssignment.submission.score / assignmentDetails.points_possible;
+    }
   });
+  student.avg = (earnedPoints / possiblePoints).toFixed(2);
+
+  result.push(student);
 };
 
-console.log(getAssignmentInfo(2));
+// run the program
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-// const getLearnerData = (CourseInfo, AssignmentGroup, LearnerSubmissions) => {};
+// instantiate the result variable
+let result = [];
 
-// console.log(getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions));
-// expected output
-// [
-//   {
-//     id: 125,
-//     avg: 0.985, // (47 + 150) / (50 + 150)
-//     1: 0.94, // 47 / 50
-//     2: 1.0, // 150 / 150
-//   },
-//   {
-//     id: 132,
-//     avg: 0.82, // (39 + 125) / (50 + 150)
-//     1: 0.78, // 39 / 50
-//     2: 0.833, // late: (140 - 15) / 150
-//   },
-// ];
+// call the main function
+result.push(buildStudentInfo(125));
+
+// return the result
+console.log("Result: ", result);
