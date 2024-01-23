@@ -3,6 +3,8 @@ ass.1, due 1/25/2023
 ass.2, due 2/27/2023 
 ass.3, due 11/15/3156
 
+
+
 learner 1: 125
 ass1: 47 / 50 = submitted 1/25 ON TIME
 ass2: 125 / 150 = submitted 2/12 ON TIME
@@ -35,57 +37,63 @@ create new student object with class constructor
 class constructor itself either has functions or calls functions that set the values as the object is constructed
 
 
+// helper function: get assignment by assignment_id as object for comparison
+
+const getAssignmentInfo = (id) => {
+	return AssignmentGroup.assignments.find((assignment) => {
+		return assignment.id === id;
+	});
+};
 
 
 
 
+// main function: build student info
+// takes one of the students ids
+const buildStudentInfo = (studentIdNumber) => {
+	console.log(studentIdNumber);
 
-let result = [];
+	// create empty student object
+	let student = {};
 
+	// add student id to student object:
+	student.id = studentIdNumber;
+	console.log(student);
 
+	// uses the getStudentGrades function to get an array of student submissions
+	// returns array of objects
+	let studentGrades = getStudentGrades(studentIdNumber);
+	console.log(studentGrades);
 
-// this function takes one of the students ids
-const buildStudentInfo = (studentId#) => {
+	// iterate through array of student assignments
+	studentGrades.forEach((assignment) => {
 
-// empty student object
-let student = {};
+	// for each assignment, use getAssignmentInfo function to get assignment details
+	// returns an assigment object
+	let tempAssignment = getAssignmentInfo(assignment.assignment_id);
 
-// uses the getStudentGrades function to get an array of student submissions
-let grades = getStudentGrades(studentId#);
-
-// iterate through array of student assignments
-grades.forEach((assignment) => {
-
-// and for each assignment:
-
-	// it uses the getAssignmentInfo function to get an the specific assignment as an object.
-	// helper function: get assignment by assignment_id as object for comparison
-	const getAssignmentInfo = (id) => {
-		return AssignmentGroup.assignments.find((assignment) => {
-		  return assignment.id === id;
-		});
-	};
-	
-	// call and assign
-	let assignmentDetails = getAssignment(assignment_id);
-
-	// then compare the student assignment to the assignment parameters
-
-	if submitted_at < due_at {
-		earnedpoints += assignment.score
+	// compare the student assignment to the assignment parameters
+	if (assignment.submitted_at < assignmentDetails.due_at) {
+		earnedpoints += assignment.score;
+		possiblepoints += assignmentDetails.points_possible;
+		student[assignment.assignment_id] = earnedPoints / possiblePoints; 
 	}
 
-	if now > assignment.due_at {
-		totalPoints += assignment.points_possible
-	};
-
-});
-
-
-
-
-
+	});
 };
+
+
+// run the program
+
+// instantiate the result variable
+let result = [];
+
+// call the main function
+buildStudentInfo(studentList);
+
+// return the result
+console.log(result);
+
 
 
 
