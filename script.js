@@ -76,7 +76,81 @@ const LearnerSubmissions = [
   },
 ];
 
-const getLearnerData = (CourseInfo, AssignmentGroup, LearnerSubmissions) => {};
+// get an iterable list of students from LearnerSubmissions
+const studentList = (() => {
+  let temp = [];
+  LearnerSubmissions.forEach((submission) => {
+    temp.push(submission.learner_id);
+  });
+  return Array.from(new Set(temp));
+})();
+
+// console.log(studentList);
+
+// iterates through student list and gets list of student submissions by student id
+// returns array of objects with student submissions
+const getStudentGrades = (id) => {
+  return LearnerSubmissions.filter((submission) => {
+    return submission.learner_id === id;
+  });
+};
+
+// console.log(getStudentGrades(125));
+
+/*
+returns:
+[
+  {
+    learner_id: 125,
+    assignment_id: 1,
+    submission: { submitted_at: '2023-01-25', score: 47 }
+  },
+  {
+    learner_id: 125,
+    assignment_id: 2,
+    submission: { submitted_at: '2023-02-12', score: 150 }
+  },
+  {
+    learner_id: 125,
+    assignment_id: 3,
+    submission: { submitted_at: '2023-01-25', score: 400 }
+  }
+]
+*/
+
+// test with one students info:
+let temp = getStudentGrades(125);
+
+// gets assignment object from AssignmentGroup.assignments array by id
+let getAssignmentInfo = (id) => {
+  return AssignmentGroup.assignments.find((assignment) => {
+    return assignment.id === id;
+  });
+};
+
+console.log(getAssignmentInfo(2));
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+// const getLearnerData = (CourseInfo, AssignmentGroup, LearnerSubmissions) => {};
 
 // console.log(getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions));
 // expected output
