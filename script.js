@@ -81,7 +81,6 @@ const getAssignmentInfo = (id) => {
     return assignment.id === id;
   });
 };
-// console.log(getAssignmentInfo(1));
 
 // get list of students from LearnerSubmissions
 const studentList = (() => {
@@ -91,7 +90,6 @@ const studentList = (() => {
   });
   return Array.from(new Set(temp));
 })();
-// console.log("Student List: , ", studentList);
 
 // use student id to get list of student submissions from LearnerSubmissions
 const getStudentGrades = (id) => {
@@ -99,7 +97,6 @@ const getStudentGrades = (id) => {
     return submission.learner_id === id;
   });
 };
-// console.log(getStudentGrades(125));
 
 // main function: build student info
 // takes one of the students ids
@@ -109,23 +106,18 @@ const buildStudentInfo = (studentIdNumber) => {
 
   // add student id to student object:
   student.id = studentIdNumber;
-  //   console.log("Student id: ", student);
 
   // uses the getStudentGrades function to get an array of student submissions
-  // returns array of objects
   let studentGrades = getStudentGrades(studentIdNumber);
-  //   console.log("Student grades: ", studentGrades);
 
+  // set temp variables
   let earnedPoints = 0;
   let possiblePoints = 0;
 
   // iterate through array of student assignments
   studentGrades.forEach((studentAssignment) => {
-    // console.log("student assignment: ", studentAssignment);
     // for each assignment, use getAssignmentInfo function to get assignment details
-    // returns an assigment object
     let assignmentDetails = getAssignmentInfo(studentAssignment.assignment_id);
-    // console.log("Temp assignment: ", assignmentDetails);
 
     // compare the student assignment to the assignment parameters
     if (studentAssignment.submission.submitted_at < assignmentDetails.due_at) {
