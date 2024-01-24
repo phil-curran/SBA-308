@@ -76,11 +76,8 @@ const LearnerSubmissions = [
 
 // helper functions:
 //get assignment from AssignmentGroup.assignments by id for comparison
-const getAssignmentInfo = (id) => {
-  return AssignmentGroup.assignments.find((assignment) => {
-    return assignment.id === id;
-  });
-};
+const getAssignmentInfo = (id) =>
+  AssignmentGroup.assignments.find((assignment) => assignment.id === id);
 
 // get list of students from LearnerSubmissions
 const studentList = (() => {
@@ -92,10 +89,12 @@ const studentList = (() => {
 })();
 
 // use student id to get list of student submissions from LearnerSubmissions
-const getStudentGrades = (id) => {
-  return LearnerSubmissions.filter((submission) => {
-    return submission.learner_id === id;
-  });
+const getStudentGrades = (id) =>
+  LearnerSubmissions.filter((submission) => submission.learner_id === id);
+
+// check if assignment was submitted on time AND due date has passed
+const checkOnTimeAndDue = (submitted_at, due_at) => {
+  return due_at <= "2024-1-2" && submitted_at <= due_at;
 };
 
 // main function: build student info
@@ -116,27 +115,41 @@ const buildStudentInfo = (studentIdNumber) => {
 
   // iterate through array of student assignments
   studentGrades.forEach((studentAssignment) => {
-    // for each assignment, use getAssignmentInfo function to get assignment details
-    let assignmentDetails = getAssignmentInfo(studentAssignment.assignment_id);
+    // destructure objects for readability
+    let { learner_id, assignment_id } = studentAssignment;
+    let { submitted_at, pointsEarned } = studentAssignment.submission;
+
+    // use getAssignmentInfo function to get assignment details
+    let assignmentDetails = getAssignmentInfo(assignment_id);
+
+    // destructure object for readability
+    let { id: assignmentID, name, due_at, points_possible } = assignmentDetails;
+
+    checkOnTimeAndDue(submitted_at, due_at);
 
     // compare the student assignment to the assignment parameters
-    if (studentAssignment.submission.submitted_at < assignmentDetails.due_at) {
-      console.log(
-        "Assignment submitted at: ",
-        studentAssignment.submission.submitted_at
-      );
-      console.log("assignment due at: ", assignmentDetails.due_at);
-      console.log(
-        "assignment submitted on time: ",
-        studentAssignment.submission.submitted_at < assignmentDetails.due_at
-      );
-      //   console.log("assignment score: ", studentAssignment.submission.score);
-      earnedPoints += studentAssignment.submission.score;
-      possiblePoints += assignmentDetails.points_possible;
-      let keyValue = parseInt(studentAssignment.assignment_id);
-      student[keyValue] =
-        studentAssignment.submission.score / assignmentDetails.points_possible;
-    }
+    // if (studentAssignment.submission.submitted_at < assignmentDetails.due_at) {
+    //   // console.log(
+    //   //   "Assignment submitted at: ",
+    //   //   studentAssignment.submission.submitted_at
+    //   // );
+    //   // console.log("Now: ", Date.now());
+    //   // console.log("assignment due at: ", assignmentDetails.due_at);
+    //   // console.log(
+    //   //   "assignment submitted on time: ",
+    //   //   studentAssignment.submission.submitted_at < assignmentDetails.due_at
+    //   // );
+    //   // console.log(
+    //   //   "assignment due date passed: ",
+    //   //   assignmentDetails.due_at < "2024-1-2"
+    //   // );
+    //   // console.log("assignment score: ", studentAssignment.submission.score);
+    //   earnedPoints += studentAssignment.submission.score;
+    //   possiblePoints += assignmentDetails.points_possible;
+    //   let keyValue = parseInt(studentAssignment.assignment_id);
+    //   student[keyValue] =
+    //     studentAssignment.submission.score / assignmentDetails.points_possible;
+    // }
   });
   student.avg = (earnedPoints / possiblePoints).toFixed(2);
 
@@ -144,7 +157,6 @@ const buildStudentInfo = (studentIdNumber) => {
 };
 
 // run the program
-
 // instantiate the result variable
 let result = [];
 
