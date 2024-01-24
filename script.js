@@ -99,7 +99,7 @@ const getStudentGrades = (id) => {
     return submission.learner_id === id;
   });
 };
-console.log(getStudentGrades(125));
+// console.log(getStudentGrades(125));
 
 // main function: build student info
 // takes one of the students ids
@@ -129,6 +129,15 @@ const buildStudentInfo = (studentIdNumber) => {
 
     // compare the student assignment to the assignment parameters
     if (studentAssignment.submission.submitted_at < assignmentDetails.due_at) {
+      console.log(
+        "Assignment submitted at: ",
+        studentAssignment.submission.submitted_at
+      );
+      console.log("assignment due at: ", assignmentDetails.due_at);
+      console.log(
+        "assignment submitted on time: ",
+        studentAssignment.submission.submitted_at < assignmentDetails.due_at
+      );
       //   console.log("assignment score: ", studentAssignment.submission.score);
       earnedPoints += studentAssignment.submission.score;
       possiblePoints += assignmentDetails.points_possible;
@@ -151,4 +160,4 @@ let result = [];
 result.push(buildStudentInfo(125));
 
 // return the result
-console.log("Result: ", result);
+// console.log("Result: ", result);
